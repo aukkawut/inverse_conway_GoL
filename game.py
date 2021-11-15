@@ -113,7 +113,7 @@ def export(grid, name):
     plt.savefig(name+'.png')
 def animate(n, grid,interval = 100):
     '''
-    This function will animate the grid for n iterations, bad implementation as it required a lot of memory
+    This function will animate the grid for n iterations
     '''
     fig = plt.figure()
     ax = plt.axes()
@@ -129,7 +129,7 @@ def animate(n, grid,interval = 100):
     
 def show_niter(grid, n):
     '''
-    This function will show the grid for n iterations
+    This function will show the grid for n iterations, deprecated. Use animate instead
     '''
     for i in range(n):
         grid = one_iter(grid)
