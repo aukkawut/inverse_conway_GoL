@@ -137,9 +137,11 @@ def show_niter(grid, n):
         plt.title('Iter ' + str(i+1))
         plt.pause(3)
         plt.clf()
-
+'''
+Test case 3
 np.random.seed(1) #for consistency
 grid = create_grid(10)
 pos = random_points(10,50) #should create 10 random points (x,y) where x and y are integers between 0 and 9
 grid = fill_grid(pos, grid)
-animate(100,grid,250)
+animate(100,grid,250) #should be empty after ~80 frames
+'''
