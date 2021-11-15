@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+from matplotlib.animation import FuncAnimation
 import seaborn as sns
 
 #Define the grid
@@ -70,9 +71,10 @@ print(grid) #should be square on the top left corner
  [0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
  [0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
  [0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]]
-
 grid = one_iter(grid)
 print(grid) #should be the truncated diamond square shape on top left corner
+'''
+'''
 [[1. 0. 1. 0. 0. 0. 0. 0. 0. 0.]
  [0. 0. 0. 1. 0. 0. 0. 0. 0. 0.]
  [1. 0. 1. 0. 0. 0. 0. 0. 0. 0.]
@@ -109,4 +111,35 @@ def export(grid, name):
     np.savetxt(name+'.txt', grid, fmt='%i')
     plt.imshow(grid, cmap='Greys', interpolation='nearest')
     plt.savefig(name+'.png')
+def animate(n, grid,interval = 100):
+    '''
+    This function will animate the grid for n iterations, bad implementation as it required a lot of memory
+    '''
+    fig = plt.figure()
+    ax = plt.axes()
+    ims = []
+    for i in range(n):
+        grid = one_iter(grid)
+        im = plt.imshow(grid, cmap='Greys', interpolation='nearest')
+        ttl = plt.text(0.5, 1.01, 'iter '+str(i), horizontalalignment='center', verticalalignment='bottom', transform=ax.transAxes)
+        
+        ims.append([im,ttl])
+    ani = animation.ArtistAnimation(fig, ims, interval=interval, blit=False, repeat_delay=1000)
+    plt.show()
+    
+def show_niter(grid, n):
+    '''
+    This function will show the grid for n iterations
+    '''
+    for i in range(n):
+        grid = one_iter(grid)
+        plt.imshow(grid, cmap='Greys', interpolation='nearest')
+        plt.title('Iter ' + str(i+1))
+        plt.pause(3)
+        plt.clf()
 
+np.random.seed(1) #for consistency
+grid = create_grid(10)
+pos = random_points(10,50) #should create 10 random points (x,y) where x and y are integers between 0 and 9
+grid = fill_grid(pos, grid)
+animate(100,grid,250)
