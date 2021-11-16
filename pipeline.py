@@ -11,16 +11,26 @@ def loaddata(filename):
     data = pd.read_csv(filename)
     return data
 
-def plot_data(data,row,end=False):
+def plot_data(data,row,start=False):
     '''
     This function will plot the data at row row from dataset, WIP
     '''
     #convert the data to numpy array with size 25,25.
-    if end:
-        d = data.iloc[row,1:625].to_numpy().reshape(25,25)
+    if start:
+        d = data.iloc[row,2:627].to_numpy().reshape(25,25)
+        dt = 0
     else:
         d = data.iloc[row,626:1251].to_numpy().reshape(25,25)
+        dt = data.iloc[row,0]
     #plot the data
-    plt.imshow(d,cmap='gray',interpolation='nearest')
+    fig = plt.imshow(d,cmap='gray_r',interpolation='nearest')
     plt.show()
+    return fig, dt
 
+def export_data(data, row, start=False):
+    '''
+    This function will export the data at row row from dataset to data folder.
+    '''
+    fig,dt = plot_data(data,row,start)
+    fig.axis('off')
+    fig.savefig('data/'+str(row)+'_dt_'+str(dt)+'.png')
