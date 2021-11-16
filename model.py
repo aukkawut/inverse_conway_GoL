@@ -86,6 +86,7 @@ def plot4matrices(grid,grid2,grid3,grid4):
     axs[2].title.set_text('Ground Truth')
     axs[3].title.set_text('Reconstruction')
     plt.show()
+
 def fire_not_fire(grid,threshold = 0.01):
     '''
     This function will return the matrix in which for each value that greater than threshold will yield 1, otherwise 0
@@ -108,9 +109,9 @@ grid2 = one_iter(one_iter(grid))
 grid2t = grid2.reshape(1,625)
 grid2t = np.insert(grid2t, 0, 2, axis=1)
 grid3 = model.predict(grid2t).reshape(25,25)
-print(grid3)
+#print(grid3)
 grid3f = fire_not_fire(grid3)
-print(grid3f)
+#print(grid3f)
 grid4 = one_iter(one_iter(grid3f))
 print(evaluation_one(grid3f, grid2,2))
 plot4matrices(grid2,grid3f,grid,grid4)
