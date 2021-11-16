@@ -27,6 +27,9 @@ def plot_data(data,row,start=False):
     plt.show()
     return fig, dt
 def to_matrix(data, row, start=False):
+    '''
+    This function will convert the data at row row from dataset to 25x25 matrix.
+    '''
     if start:
         d = data.iloc[row,2:627].to_numpy().reshape(25,25)
         dt = 0
@@ -41,3 +44,4 @@ def export_data(data, row, start=False):
     fig,dt = plot_data(data,row,start)
     fig.axis('off')
     fig.savefig('data/'+str(row)+'_dt_'+str(dt)+'.png')
+

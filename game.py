@@ -43,7 +43,7 @@ def one_iter(grid):
     new_grid = grid.copy()
     for i in range(len(grid)):
         for j in range(len(grid)):
-            if grid[i,j] == 1:
+            if grid[i,j] > 0:
                 if count_neighbours(grid, i, j) < 2: #underpopulation
                     new_grid[i,j] = 0
                 elif count_neighbours(grid, i, j) > 3: #overpopulation
@@ -144,4 +144,45 @@ grid = create_grid(10)
 pos = random_points(10,50) #should create 10 random points (x,y) where x and y are integers between 0 and 9
 grid = fill_grid(pos, grid)
 animate(100,grid,250) #should be empty after ~80 frames
+'''
+
+def sanity_check_game():
+    '''
+    This function will test the correctness of the functions
+    '''
+    grid = create_grid(10)
+    pos = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
+    grid = fill_grid(pos, grid)
+    assert grid[0,0] == 1
+    assert grid[0,1] == 1
+    assert grid[0,2] == 1
+    assert grid[1,0] == 1
+    assert grid[1,1] == 1
+    assert grid[1,2] == 1
+    assert grid[2,0] == 1
+    assert grid[2,1] == 1
+    assert grid[2,2] == 1
+    assert count_neighbours(grid, 0, 0) == 3
+    assert count_neighbours(grid, 0, 1) == 4
+    assert count_neighbours(grid, 0, 2) == 3
+    assert count_neighbours(grid, 1, 0) == 4
+    assert count_neighbours(grid, 1, 1) == 8
+    assert count_neighbours(grid, 1, 2) == 5
+    assert count_neighbours(grid, 2, 0) == 3
+    assert count_neighbours(grid, 2, 1) == 5
+    assert count_neighbours(grid, 2, 2) == 3
+    assert one_iter(grid)[0,0] == 1
+    assert one_iter(grid)[0,1] == 0
+    assert one_iter(grid)[0,2] == 1
+    assert one_iter(grid)[1,0] == 0
+    assert one_iter(grid)[1,1] == 0
+    assert one_iter(grid)[1,2] == 0
+    assert one_iter(grid)[2,0] == 1
+    assert one_iter(grid)[2,1] == 0
+    assert one_iter(grid)[2,2] == 1
+'''
+np.random.seed(8) #for consistency
+grid = create_grid(10)
+grid = fill_grid(random_points(10,25), grid)
+animate(100,grid)
 '''
