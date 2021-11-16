@@ -26,7 +26,14 @@ def plot_data(data,row,start=False):
     fig = plt.imshow(d,cmap='gray_r',interpolation='nearest')
     plt.show()
     return fig, dt
-
+def to_matrix(data, row, start=False):
+    if start:
+        d = data.iloc[row,2:627].to_numpy().reshape(25,25)
+        dt = 0
+    else:
+        d = data.iloc[row,626:1251].to_numpy().reshape(25,25)
+        dt = data.iloc[row,0]
+    return d, dt
 def export_data(data, row, start=False):
     '''
     This function will export the data at row row from dataset to data folder.
