@@ -98,3 +98,37 @@ def fire_not_fire(grid,threshold = 0.01):
                 grid[i,j] = 0
     return grid   
 
+def CNN():
+    '''
+    This function will create the CNN model
+    %TODO:
+        - Change the input shape to (1,625) with another input dt
+        - Test and adjust the model
+    '''
+    model = Sequential()
+    model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(625,)))
+    model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+    model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+    model.add(layers.Flatten())
+    model.add(layers.Dense(64, activation='relu'))
+    model.add(layers.Dense(625, activation='softmax'))
+    model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
+    return model
+
+def train_CNN(x_train, y_train, batch_size = 32, epochs = 10):
+    '''
+    This function will train the CNN model
+    '''
+    model = CNN()
+    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=0.2)
+    return model
+
+def GAN():
+    '''
+    This function will generate the convolutional cyclic generative adversarial network (CCycleGAN) 
+    %TODO:
+        - Write the function
+    '''
+    return None
