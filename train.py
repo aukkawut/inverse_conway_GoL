@@ -7,8 +7,20 @@ np.random.seed(0) #for consistency
 data = loaddata('train.csv') #load data, please put it on the same folder
 
 X_train, X_test, y_train, y_test = test_train(data)
-model = train_FullyConnected(X_train, y_train)
+print("Training Fully Connected Neural Network:")
+model,hist = train_FullyConnected(X_train, y_train)
+save_loss(hist, 'FullyConnected')
 print(model.evaluate(X_test, y_test))
+
+'''
+train CNN
+'''
+print("Training CNN:")
+X_train, X_test, y_train, y_test, X_train2,X_test2 = prepare_CNN(data)
+model2,hist = train_CNN(X_train, X_train2, y_train)
+save_loss(hist, 'CNN')
+print(model2.evaluate([X_test,X_test2], y_test))
+print("Done!")
 
 grid = create_grid(25)
 grid = fill_grid(random_points(25,50), grid)

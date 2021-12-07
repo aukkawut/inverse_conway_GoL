@@ -41,6 +41,16 @@ def test_train(data):
     X_train, X_test, y_train, y_test = train_test_split(data.iloc[:,1:627], data.iloc[:,626:1251], test_size=0.2, random_state=42)
     return X_train, X_test, y_train, y_test
 
+def CNN_pipeline(data):
+    '''
+    This function will split data into training and testing while making it into 2 channel matrix form
+    '''
+    X_train, X_test, y_train, y_test = test_train(data)
+    X_train = X_train[:,1:626].values.reshape(X_train.shape[0],25,25)
+    X_train2 = np.full((25,25),X_train[:,:,0])
+    X_test = X_test.values.reshape(X_test.shape[0],25,25)
+    return X_train, X_test, y_train, y_test
+
 def FullyConnected():
     '''
     This function will create the FullyConnected NN model
@@ -62,8 +72,8 @@ def train_FullyConnected(x_train, y_train, batch_size = 32, epochs = 10):
     This function will train the fully connected neural network model
     '''
     model = FullyConnected()
-    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=0.2)
-    return model
+    hist = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=0.2)
+    return model, hist
 
 def saveModel(model,name='./model/model.h5'):
     '''
@@ -105,25 +115,44 @@ def CNN():
         - Change the input shape to (1,625) with another input dt
         - Test and adjust the model
     '''
-    model = Sequential()
-    model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(625,)))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-    model.add(layers.MaxPooling2D((2, 2)))
-    model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-    model.add(layers.Flatten())
-    model.add(layers.Dense(64, activation='relu'))
-    model.add(layers.Dense(625, activation='softmax'))
+    in1 = layers.Input(shape=(625,))
+    in2 = layers.Input(shape=(1,))
+    x = layers.Reshape((25,25,1))(in1)
+    x = layers.Conv2D(32, (3, 3), activation='relu')(x)
+    x = layers.Conv2D(32, (3, 3), activation='relu')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
+    x = layers.Conv2D(64, (3, 3), activation='relu')(x)
+    x = layers.Conv2D(64, (3, 3), activation='relu')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
+    x = layers.Conv2D(128, (3, 3), activation='relu')(x)
+    x = layers.Conv2D(128, (3, 3), activation='relu')(x)
+    x = layers.MaxPooling2D((2, 2))(x)
+    x = layers.flatten(x)
+    y = layers.Dense(625, activation='relu',)(in2)
+    x = layers.concatenate([x,y])
+    x = layers.Dense(625, activation='relu')(x)
+    x = layers.Dense(625, activation='relu')(x)
+    out = layers.Dense(625, activation='softmax')(x)
+    model = Model(inputs=[in1,in2], outputs=out)
     model.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
     return model
-
-def train_CNN(x_train, y_train, batch_size = 32, epochs = 10):
+def prepare_CNN(data):
+    '''
+    This function will prepare the data for the CNN model
+    '''
+    X_train, X_test, y_train, y_test = test_train(data)
+    X_train = X_train[:,1:626]
+    X_train2 = X_train[:,:,0]
+    X_test = X_test[:,1:626]
+    X_test2 = X_test[:,:,0]
+    return X_train, X_test, y_train, y_test, X_train2, X_test2
+def train_CNN(x_train,x_train2, y_train, batch_size = 32, epochs = 10):
     '''
     This function will train the CNN model
     '''
     model = CNN()
-    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_split=0.2)
-    return model
+    hist = model.fit([x_train,x_train2], y_train, batch_size=batch_size, epochs=epochs, validation_split=0.2)
+    return model, hist
 
 def GAN():
     '''

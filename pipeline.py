@@ -45,3 +45,23 @@ def export_data(data, row, start=False):
     fig.axis('off')
     fig.savefig('data/'+str(row)+'_dt_'+str(dt)+'.png')
 
+def save_loss(hist, filename, plot=True):
+    '''
+    This function will save the loss history to a file.
+    '''
+    pd.DataFrame(hist.history).to_csv(filename+'.csv')
+    plt.plot(hist.history['acc'])
+    plt.plot(hist.history['val_acc'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='upper left')
+    plt.savefig(filename+'_acc.png')
+    plt.clf()
+    plt.plot(hist.history['loss'])
+    plt.plot(hist.history['val_loss'])
+    plt.title('model loss')
+    plt.ylabel('loss')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'val'], loc='upper left')
+    plt.savefig(filename+'_loss.png')
