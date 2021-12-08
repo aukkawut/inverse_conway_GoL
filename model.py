@@ -153,6 +153,7 @@ def train_CNN(x_train,x_train2, y_train, batch_size = 32, epochs = 10):
     model = CNN()
     hist = model.fit([x_train,x_train2], y_train, batch_size=batch_size, epochs=epochs, validation_split=0.2)
     return model, hist
+
 def get_generator():
     model = Sequential()
     model.add(layers.Input((625,)))
@@ -175,6 +176,7 @@ def get_discriminator():
     return model
 
 class CycleGan(keras.Model):
+    #modified from https://keras.io/examples/generative/cyclegan/
     def __init__(
         self,
         generator_G,
@@ -312,6 +314,7 @@ class CycleGan(keras.Model):
         }
         
 class GANMonitor(keras.callbacks.Callback):
+    #modified from https://keras.io/examples/generative/cyclegan/
     """A callback to generate and save images after each epoch"""
 
     def __init__(self, num_img=4):
@@ -344,18 +347,21 @@ class GANMonitor(keras.callbacks.Callback):
 adv_loss_fn = keras.losses.MeanSquaredError()
 # Define the loss function for the generators
 def generator_loss_fn(fake):
+    #modified from https://keras.io/examples/generative/cyclegan/
     fake_loss = adv_loss_fn(tf.ones_like(fake), fake)
     return fake_loss
 
 
 # Define the loss function for the discriminators
 def discriminator_loss_fn(real, fake):
+    #modified from https://keras.io/examples/generative/cyclegan/
     real_loss = adv_loss_fn(tf.ones_like(real), real)
     fake_loss = adv_loss_fn(tf.zeros_like(fake), fake)
     return (real_loss + fake_loss) * 0.5
 
 
 def GAN(x,y, steps_per_epoch = 625, epochs=10):
+    #modified from https://keras.io/examples/generative/cyclegan/
     '''
     This function will generate the convolutional cyclic generative adversarial network (CCycleGAN) 
     %TODO:
