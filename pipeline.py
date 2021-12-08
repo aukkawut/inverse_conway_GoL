@@ -8,7 +8,7 @@ def loaddata(filename):
     '''
     This function will read the data from the file
     '''
-    data = pd.read_csv(filename)
+    data = pd.read_csv(filename, index_col = 0)
     return data
 
 def plot_data(data,row,start=False):
@@ -50,18 +50,3 @@ def save_loss(hist, filename, plot=True):
     This function will save the loss history to a file.
     '''
     pd.DataFrame(hist.history).to_csv(filename+'.csv')
-    plt.plot(hist.history['acc'])
-    plt.plot(hist.history['val_acc'])
-    plt.title('model accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'val'], loc='upper left')
-    plt.savefig(filename+'_acc.png')
-    plt.clf()
-    plt.plot(hist.history['loss'])
-    plt.plot(hist.history['val_loss'])
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'val'], loc='upper left')
-    plt.savefig(filename+'_loss.png')
