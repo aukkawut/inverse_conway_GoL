@@ -17,6 +17,7 @@ grid = fill_grid(random_points(10,25), grid) #fill grid with 25 random points ra
 #pos = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)] #will create the position list that contains the points that will create the 3*3 square at the grid corner.
 animate(100,grid) #animate 100 iterations of that particular orientation
 ```
+Update: Added the `FullyConnected`, `CNN`, and `CycleGAN` (still buggy on callback routine) models.
 
 ## To-do 
 1. Redefine the loss function (to make it position-invariant). The current evaluation is still position-variant and biased
