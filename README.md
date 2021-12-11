@@ -19,8 +19,4 @@ animate(100,grid) #animate 100 iterations of that particular orientation
 ```
 Update: Added the `FullyConnected`, `CNN`, and `CycleGAN` (still buggy on callback routine) models.
 
-## To-do 
-1. Redefine the loss function (to make it position-invariant). The current evaluation is still position-variant and biased [Future Work]
-2. Try out CNN and CycleGAN as proposal said [Done]
-3. Generate more data for training [Done]
-4. Check the testcase and recheck the code as I smell some fishy smelly bugs inside that code []
+It is not the perfect work (instead, the completely opposite), but the model be able to somewhat track where to change not what to change. If we change the architecture a little bit, it might work well.
